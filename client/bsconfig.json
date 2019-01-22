@@ -1,0 +1,14 @@
+{
+  "name": "razzle-reason",
+  "reason": {
+    "react-jsx": 2
+  },
+  "refmt": 3,
+  "bs-dependencies": ["bs-react-native", "reason-react"],
+  "sources": [
+    {
+      "dir": "src/components/App"
+    }
+  ],
+  "suffix": ".bs.js"
+}

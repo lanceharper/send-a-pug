@@ -1,0 +1,54 @@
+{
+  "name": "jerk-twitch-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "bsb-watch": "bsb -make-world -w",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development",
+    "cert": "./bin/generate_cert.sh server",
+    "host": "yarn run bsb-watch | webpack-dev-server --mode development --devrig"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^23.4.2",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "bs-platform": "^4.0.5",
+    "css-loader": "^0.28.11",
+    "enzyme": "^3.4.1",
+    "enzyme-adapter-react-16": "^1.2.0",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.5.0",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.3"
+  },
+  "dependencies": {
+    "bs-react-native": "^0.9.0",
+    "jsonwebtoken": "^8.3.0",
+    "react": "^16.5.1",
+    "react-art": "^16.5.1",
+    "react-dom": "^16.5.1",
+    "react-native-web": "^0.9.0",
+    "reason-react": "^0.5.3"
+  },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/test/jestsetup.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+    }
+  }
+}
