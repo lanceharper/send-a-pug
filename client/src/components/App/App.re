@@ -1,7 +1,7 @@
 /* App is the actual entry point for the application. It matches on the route prop to determine which
    sub-component to render */
 open BsReactNative;
-
+open Twitch;
 let styles =
   StyleSheet.create(
     Style.(
@@ -27,11 +27,13 @@ let component = ReasonReact.statelessComponent("App");
 
 let make = _children => {
   ...component,
+  didMount: _ =>
+    onAuthorized(twitchAuth => Js.log(clientIdGet(twitchAuth))),
   render: _self =>
     <View>
       <View style=styles##navBar>
         <View style=styles##link>
-          <Text> (ReasonReact.string("Home :)")) </Text>
+          <Text> (ReasonReact.string("Home :|")) </Text>
         </View>
       </View>
     </View>,
