@@ -26,6 +26,7 @@
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-16": "^1.2.0",
     "file-loader": "^1.1.11",
+    "graphql_ppx": "^0.2.8",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^23.5.0",
     "style-loader": "^0.21.0",
@@ -34,12 +35,13 @@
     "webpack-dev-server": "^3.1.3"
   },
   "dependencies": {
-    "bs-react-native": "^0.9.0",
+    "bs-react-native": "^0.10.0",
     "jsonwebtoken": "^8.3.0",
     "react": "^16.5.1",
     "react-art": "^16.5.1",
     "react-dom": "^16.5.1",
     "react-native-web": "^0.9.0",
+    "reason-apollo": "^0.15.1",
     "reason-react": "^0.5.3"
   },
   "jest": {

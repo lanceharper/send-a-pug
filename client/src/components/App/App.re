@@ -1,6 +1,7 @@
 /* App is the actual entry point for the application. It matches on the route prop to determine which
    sub-component to render */
 open BsReactNative;
+open Twitch;
 
 let styles =
   StyleSheet.create(
@@ -28,6 +29,8 @@ let styles =
           fontWeight(`_500),
           fontFamily("Futura"),
         ]),
+      "scrollContainer":
+        style([backgroundColor(String("white")), height(Pt(250.))]),
     },
   );
 
@@ -35,6 +38,7 @@ let component = ReasonReact.statelessComponent("App");
 
 let make = _children => {
   ...component,
+  didMount: _ => onAuthorized(twitchAuth => Js.log(clientIdGet(twitchAuth))),
   render: _self =>
     <View style=styles##container>
       <View style=styles##navBar>
@@ -44,12 +48,8 @@ let make = _children => {
           </Text>
         </View>
       </View>
-      <ScrollView>
-        <View style=styles##spacer>
-          <Text style=styles##headerText>
-            {ReasonReact.string("scrolled")}
-          </Text>
-        </View>
+      <ScrollView style=styles##scrollContainer>
+        <Wave name="hi" />
         <View style=styles##spacer>
           <Text style=styles##headerText>
             {ReasonReact.string("scrolled")}
@@ -64,4 +64,4 @@ let make = _children => {
     </View>,
 };
 
-let default = ReasonReact.wrapReasonForJs(~component, jsProps => make([||]));
+let default = ReasonReact.wrapReasonForJs(~component, _ => make([||]));
