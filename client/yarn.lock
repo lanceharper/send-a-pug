@@ -1372,10 +1372,10 @@ bs-platform@^4.0.5:
   resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-4.0.18.tgz#d17b8693ba1f714d9b27e0ddb365f2069ba4b8a0"
   integrity sha512-BwzW0iYHvREqUZIgQxJmdJrxexppLvJxYQ4LLexbhCp7uZU5DIZ5ub4ZHpkCkc8fn8bsXWc+Rrejb3csi+BoAQ==
 
-bs-react-native@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/bs-react-native/-/bs-react-native-0.9.0.tgz#198a0d198d296e0a500be950ad43d8d31497cbe9"
-  integrity sha512-dCZU+xYCZ3rGumGBJo/8w3WpeicjkfilK5vzT/MRCEYxC1ezisEOjAvaksx6uTFjv20RKsrqTpeJINjFClP/QA==
+bs-react-native@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/bs-react-native/-/bs-react-native-0.10.0.tgz#4a9167cbe4c858008a9e56a0f745ba723c74101c"
+  integrity sha512-QpSbKwuYbDU1qBrxplmKvO8TZOtK2DpevoOUxDm0NfMNAdF6oacSbJfqMx89n2eGzMm8imZ3JsUeZPl6OT2N4A==
 
 bser@^2.0.0:
   version "2.0.0"
