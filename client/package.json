@@ -9,6 +9,7 @@
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development",
     "cert": "./bin/generate_cert.sh server",
+    "devrig": "webpack-dev-server --mode development --devrig",
     "host": "yarn run bsb-watch | webpack-dev-server --mode development --devrig"
   },
   "keywords": [],

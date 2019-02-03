@@ -3,64 +3,54 @@
 open BsReactNative;
 open Twitch;
 
+type state = {count: int};
+
+type action =
+  | Click;
+
+let tempCounterStyle = Style.(style([color(String("lightblue"))]));
+
 let styles =
   StyleSheet.create(
     Style.{
-      "container": style([backgroundColor(String("silver")), flex(1.0)]),
-      "spacer":
-        style([height(Pt(450.)), backgroundColor(String("orange"))]),
       "navBar":
         style([
           flexDirection(Row),
           backgroundColor(String("slateblue")),
-          paddingVertical(Pct(2.)),
-          paddingHorizontal(Pct(16.)),
+          paddingVertical(Pt(8.)),
+          paddingHorizontal(Pt(16.)),
         ]),
+      "fooText": style([backgroundColor(String("orange"))]),
       "link":
         style([
           paddingVertical(Pt(4.)),
           paddingHorizontal(Pt(8.)),
           marginRight(Pt(8.)),
         ]),
-      "headerText":
-        style([
-          color(String("white")),
-          fontSize(Float(19.)),
-          fontWeight(`_500),
-          fontFamily("Futura"),
-        ]),
-      "scrollContainer":
-        style([backgroundColor(String("white")), height(Pt(250.))]),
+      "baseText": style([fontSize(Float(95.))]),
     },
   );
 
-let component = ReasonReact.statelessComponent("App");
+let component = ReasonReact.reducerComponent("App");
 
 let make = _children => {
   ...component,
   didMount: _ => onAuthorized(twitchAuth => Js.log(clientIdGet(twitchAuth))),
-  render: _self =>
-    <View style=styles##container>
-      <View style=styles##navBar>
-        <View style=styles##link>
-          <Text style=styles##headerText>
-            {ReasonReact.string("Home? :)")}
-          </Text>
-        </View>
-      </View>
-      <ScrollView style=styles##scrollContainer>
-        <Wave name="hi" />
-        <View style=styles##spacer>
-          <Text style=styles##headerText>
-            {ReasonReact.string("scrolled")}
-          </Text>
-        </View>
-        <View style=styles##spacer>
-          <Text style=styles##headerText>
-            {ReasonReact.string("scrolled")}
-          </Text>
-        </View>
-      </ScrollView>
+
+  initialState: () => {count: 0},
+
+  reducer: (action, state) =>
+    switch (action) {
+    | Click => ReasonReact.Update({count: state.count + 1})
+    },
+
+  render: self =>
+    <View>
+      <Text style=tempCounterStyle>
+        {ReasonReact.string(string_of_int(self.state.count))}
+      </Text>
+      <Wave />
+      <TriggerContainer onPress={_event => self.send(Click)} />
     </View>,
 };
 
