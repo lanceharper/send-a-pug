@@ -1,6 +1,16 @@
 open BsReactNative;
 
-let component = ReasonReact.statelessComponent("Wave");
+type state =
+  | Calm
+  | Waxing
+  | Waning;
+
+type action =
+  | Intensify
+  | Abate
+  | Stop;
+
+let component = ReasonReact.reducerComponent("Wave");
 
 let animatedValue = Animated.Value.create(0.0);
 
@@ -18,7 +28,7 @@ let animation =
     ~value=animatedValue,
     ~toValue=`raw(1.0),
     ~duration=1000.0,
-    ~easing=Easing.ease,
+    ~easing=Easing.sin,
     (),
   );
 
@@ -32,18 +42,44 @@ let containerStyle =
     ])
   );
 
-let make = _children => {
+let make = (~onFinish, _children) => {
   ...component,
-  didMount: _self =>
-    Animated.start(
-      Animated.timing(
-        ~value=animatedValue,
-        ~toValue=`raw(1.0),
-        ~duration=1000.0,
-        (),
-      ),
-      ~callback=_didFinish => Js.log("ok"),
-      (),
-    ),
+  didMount: self => self.send(Intensify),
+
+  initialState: () => Calm,
+  reducer: (action, _state) =>
+    switch (action) {
+    | Intensify =>
+      ReasonReact.UpdateWithSideEffects(
+        Waxing,
+        self =>
+          Animated.start(
+            Animated.timing(
+              ~value=animatedValue,
+              ~toValue=`raw(1.0),
+              ~duration=500.0,
+              (),
+            ),
+            ~callback=_ => self.send(Abate),
+            (),
+          ),
+      )
+    | Abate =>
+      ReasonReact.UpdateWithSideEffects(
+        Waning,
+        self =>
+          Animated.start(
+            Animated.timing(
+              ~value=animatedValue,
+              ~toValue=`raw(0.0),
+              ~duration=500.0,
+              (),
+            ),
+            ~callback=_ => self.send(Stop),
+            (),
+          ),
+      )
+    | Stop => ReasonReact.UpdateWithSideEffects(Calm, onFinish)
+    },
   render: _self => <Animated.View style=containerStyle />,
 };

@@ -5,9 +5,11 @@ open Twitch;
 
 type state = {count: int};
 
-type action =
-  | Click;
+type clicked = bool;
 
+type action =
+  | Click(clicked)
+  | Reset;
 let tempCounterStyle = Style.(style([color(String("lightblue"))]));
 
 let styles =
@@ -41,16 +43,20 @@ let make = _children => {
 
   reducer: (action, state) =>
     switch (action) {
-    | Click => ReasonReact.Update({count: state.count + 1})
+    | Click(clicked) =>
+      clicked ?
+        ReasonReact.Update({count: state.count + 1}) : ReasonReact.NoUpdate
+    | Reset => ReasonReact.Update({count: 0})
     },
 
   render: self =>
     <View>
+      {self.state.count >= 5 ?
+         <Wave onFinish={_event => self.send(Reset)} /> : ReasonReact.null}
+      <TriggerContainer onPress={event => self.send(Click(event.clicked))} />
       <Text style=tempCounterStyle>
         {ReasonReact.string(string_of_int(self.state.count))}
       </Text>
-      <Wave />
-      <TriggerContainer onPress={_event => self.send(Click)} />
     </View>,
 };
 
