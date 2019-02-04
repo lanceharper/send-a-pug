@@ -16,6 +16,14 @@ let tempCounterStyle = Style.(style([color(String("lightblue"))]));
 
 let component = ReasonReact.reducerComponent("App");
 
+let styles =
+  StyleSheet.create(
+    Style.{
+      "explodeHeart":
+        style([left(Pt(0.)), top(Pt(0.)), position(Absolute)]),
+    },
+  );
+
 let make = _children => {
   ...component,
   didMount: _ => onAuthorized(twitchAuth => Js.log(clientIdGet(twitchAuth))),
@@ -33,9 +41,13 @@ let make = _children => {
 
   render: self =>
     <View>
+      <HeartContainer>
+        <Heart filled=true style={styles##explodeHeart} />
+        <Heart filled=true style={styles##explodeHeart} />
+      </HeartContainer>
       {self.state |> List.length >= 5 ?
          <Wave onFinish={_event => self.send(Reset)} /> : ReasonReact.null}
-      <TriggerContainer onPress={event => self.send(Click(event.clicked))} />
+      <TriggerContainer onPress={_event => self.send(Click(true))} />
       <Text style=tempCounterStyle>
         {ReasonReact.string(string_of_int(self.state |> List.length))}
       </Text>
