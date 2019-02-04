@@ -14,11 +14,15 @@ let component = ReasonReact.reducerComponent("Wave");
 
 let animatedValue = Animated.Value.create(0.0);
 
+let duration = 1500.0;
+
+let maxHeight = 300.0;
+
 let animatedHeight =
   Animated.Value.interpolate(
     animatedValue,
     ~inputRange=[0.0, 1.0],
-    ~outputRange=`float([0.0, 100.0]),
+    ~outputRange=`float([0.0, maxHeight]),
     ~extrapolate=Animated.Interpolation.Clamp,
     (),
   );
@@ -27,7 +31,7 @@ let animation =
   Animated.timing(
     ~value=animatedValue,
     ~toValue=`raw(1.0),
-    ~duration=1000.0,
+    ~duration,
     ~easing=Easing.sin,
     (),
   );
@@ -38,7 +42,7 @@ let containerStyle =
       opacity(Animated(animatedValue)),
       height(Animated(animatedHeight)),
       flex(1.0),
-      backgroundColor(String("lightgreen")),
+      backgroundColor(String("limegreen")),
     ])
   );
 
@@ -57,7 +61,7 @@ let make = (~onFinish, _children) => {
             Animated.timing(
               ~value=animatedValue,
               ~toValue=`raw(1.0),
-              ~duration=500.0,
+              ~duration,
               (),
             ),
             ~callback=_ => self.send(Abate),
@@ -72,7 +76,7 @@ let make = (~onFinish, _children) => {
             Animated.timing(
               ~value=animatedValue,
               ~toValue=`raw(0.0),
-              ~duration=500.0,
+              ~duration=1500.0,
               (),
             ),
             ~callback=_ => self.send(Stop),
