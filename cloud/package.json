@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "serverless-appsync-plugin": "^1.0.9"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.400.0",
+    "serverless-cf-vars": "^0.3.0"
+  }
+}

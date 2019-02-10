@@ -1,0 +1,16 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Jerk {
+  title: String!
+}
+
+type Mutation {
+  createJerk: Jerk
+}
+
+type Query {
+  getJerks: String!
+}

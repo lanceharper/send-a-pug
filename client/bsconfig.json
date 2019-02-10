@@ -1,10 +1,11 @@
 {
-  "name": "razzle-reason",
+  "name": "jerk-twitch",
   "reason": {
     "react-jsx": 2
   },
   "refmt": 3,
-  "bs-dependencies": ["bs-react-native", "reason-react"],
+  "bs-dependencies": ["bs-react-native", "reason-react", "reason-apollo"],
+  "ppx-flags": ["graphql_ppx/ppx"],
   "sources": [
     {
       "dir": "src/components/App"
