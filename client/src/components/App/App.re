@@ -16,6 +16,14 @@ let tempCounterStyle = Style.(style([color(String("lightblue"))]));
 
 let component = ReasonReact.reducerComponent("App");
 
+module GetAllJerks = [%graphql {|
+  {
+    getJerks
+  }
+|}];
+
+module GetAllJerksQuery = ReasonApollo.CreateQuery(GetAllJerks);
+
 let styles =
   StyleSheet.create(
     Style.{
@@ -40,18 +48,30 @@ let make = _children => {
     },
 
   render: self =>
-    <View>
-      <HeartContainer>
-        <Heart filled=true style={styles##explodeHeart} />
-        <Heart filled=true style={styles##explodeHeart} />
-      </HeartContainer>
-      {self.state |> List.length >= 5 ?
-         <Wave onFinish={_event => self.send(Reset)} /> : ReasonReact.null}
-      <TriggerContainer onPress={_event => self.send(Click(true))} />
-      <Text style=tempCounterStyle>
-        {ReasonReact.string(string_of_int(self.state |> List.length))}
-      </Text>
-    </View>,
+    <ReasonApollo.Provider client=Client.instance>
+      <GetAllJerksQuery>
+        ...{({result, _}) =>
+          switch (result) {
+          | Loading => <Text> {"Loading" |> ReasonReact.string} </Text>
+          | Error(_e) => <Text> {"Error" |> ReasonReact.string} </Text>
+          | Data(_) =>
+            <View>
+              <HeartContainer>
+                <Heart filled=true style={styles##explodeHeart} />
+                <Heart filled=true style={styles##explodeHeart} />
+              </HeartContainer>
+              {self.state |> List.length >= 5 ?
+                 <Wave onFinish={_event => self.send(Reset)} /> :
+                 ReasonReact.null}
+              <TriggerContainer onPress={_event => self.send(Click(true))} />
+              <Text style=tempCounterStyle>
+                {ReasonReact.string(string_of_int(self.state |> List.length))}
+              </Text>
+            </View>
+          }
+        }
+      </GetAllJerksQuery>
+    </ReasonApollo.Provider>,
 };
 
 let default = ReasonReact.wrapReasonForJs(~component, _ => make([||]));

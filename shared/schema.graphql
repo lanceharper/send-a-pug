@@ -11,6 +11,10 @@ type Mutation {
   createJerk: Jerk
 }
 
+type Foo {
+  bar: String!
+}
+
 type Query {
-  getJerks: String!
+  getNone(foo: String): Foo
 }
