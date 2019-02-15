@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "update-schema": "./bin/update-appsync-schema.sh"
+  },
   "dependencies": {
     "serverless-appsync-plugin": "^1.0.9"
   },

@@ -16,13 +16,17 @@ let tempCounterStyle = Style.(style([color(String("lightblue"))]));
 
 let component = ReasonReact.reducerComponent("App");
 
-module GetAllJerks = [%graphql {|
-  {
-    getJerks
-  }
-|}];
+module GetAllNone = [%graphql
+  {|
+    query none{
+      getNone(foo:"baz"){
+        bar
+      }
+    }
+  |}
+];
 
-module GetAllJerksQuery = ReasonApollo.CreateQuery(GetAllJerks);
+module GetNoneQuery = ReasonApollo.CreateQuery(GetAllNone);
 
 let styles =
   StyleSheet.create(
@@ -49,7 +53,7 @@ let make = _children => {
 
   render: self =>
     <ReasonApollo.Provider client=Client.instance>
-      <GetAllJerksQuery>
+      <GetNoneQuery>
         ...{({result, _}) =>
           switch (result) {
           | Loading => <Text> {"Loading" |> ReasonReact.string} </Text>
@@ -70,7 +74,7 @@ let make = _children => {
             </View>
           }
         }
-      </GetAllJerksQuery>
+      </GetNoneQuery>
     </ReasonApollo.Provider>,
 };
 
