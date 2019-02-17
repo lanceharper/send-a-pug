@@ -29,9 +29,22 @@ module CreateJerk = [%graphql
   |}
 ];
 
-// module GetNoneQuery = ReasonApollo.CreateQuery(GetAllNone);
+module JerkCreated = [%graphql
+  {|
+    subscription JerkCreatedSubscription {
+      inbox(to: "marge") {
+        from
+        to
+        message
+        sentAt
+      }
+    }
+  |}
+];
 
 module CreateJerkMutation = ReasonApollo.CreateMutation(CreateJerk);
+
+module JerkCreatedSubscription = ReasonApollo.CreateSubscription(JerkCreated);
 
 let styles =
   StyleSheet.create(
@@ -71,10 +84,9 @@ let make = _children => {
                <Wave onFinish={_event => self.send(Reset)} /> :
                ReasonReact.null}
             <TriggerContainer
-              onPress={_event => {
-                self.send(Click(true));
-                mutation(~variables=createJerkResult##variables, ()) |> ignore;
-              }}
+              onPress={_event =>
+                mutation(~variables=createJerkResult##variables, ()) |> ignore
+              }
             />
             {switch (result) {
              | Loading => <Text> {ReasonReact.string("Searching")} </Text>
@@ -94,6 +106,20 @@ let make = _children => {
           </View>;
         }}
       </CreateJerkMutation>
+      <JerkCreatedSubscription>
+        ...{({result}) =>
+          switch (result) {
+          | Loading => <div />
+          | Error(_error) => <div />
+          | Data(response) =>
+            switch (response##inbox) {
+            | None => <Text> {"No Message" |> ReasonReact.string} </Text>
+            | Some(inboxResponse) =>
+              <Text> {inboxResponse##sentAt |> ReasonReact.string} </Text>
+            }
+          }
+        }
+      </JerkCreatedSubscription>
     </ReasonApollo.Provider>,
 };
 
