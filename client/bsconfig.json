@@ -8,7 +8,8 @@
   "ppx-flags": ["graphql_ppx/ppx"],
   "sources": [
     {
-      "dir": "src/components/App"
+      "dir": "src",
+      "subdirs": true
     }
   ],
   "suffix": ".bs.js"

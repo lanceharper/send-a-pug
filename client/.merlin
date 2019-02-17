@@ -12,6 +12,8 @@ S /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/reason-react/l
 B /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/reason-react/lib/ocaml
 S /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/reason-apollo/lib/ocaml
 B /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/reason-apollo/lib/ocaml
+S src/AWS
+B lib/bs/src/AWS
 S src/components/App
 B lib/bs/src/components/App
 ####BSB GENERATED: NO EDIT}
