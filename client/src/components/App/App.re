@@ -21,6 +21,7 @@ module GetAllNone = [%graphql
     query none{
       getNone(foo:"baz"){
         bar
+        sentAt
       }
     }
   |}

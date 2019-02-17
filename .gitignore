@@ -4,3 +4,5 @@
 client/graphql_schema.json
 client/.bsb.lock
 *.hash
+client/.bsb.lock
+client/.graphql_ppx_cache/graphql_schema.json.hash
