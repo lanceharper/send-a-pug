@@ -1,21 +1,24 @@
 schema {
   query: Query
   mutation: Mutation
+  subscription: Subscription
+}
+
+type Subscription {
+  inbox(to: String!): Jerk @aws_subscribe(mutations: ["createJerk"])
 }
 
 type Jerk {
-  title: String!
-}
-
-type Mutation {
-  createJerk: Jerk
-}
-
-type Foo {
-  bar: String!
+  from: String!
+  to: String!
+  message: String!
   sentAt: String!
 }
 
+type Mutation {
+  createJerk(message: String!, to: String): Jerk!
+}
+
 type Query {
-  getNone(foo: String): Foo
+  me: String
 }

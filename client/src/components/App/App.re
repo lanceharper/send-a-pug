@@ -16,18 +16,22 @@ let tempCounterStyle = Style.(style([color(String("lightblue"))]));
 
 let component = ReasonReact.reducerComponent("App");
 
-module GetAllNone = [%graphql
+module CreateJerk = [%graphql
   {|
-    query none{
-      getNone(foo:"baz"){
-        bar
+    mutation CreateJerk {
+      createJerk(message:"hey", to: "marge") {
+        from
+        to
+        message
         sentAt
       }
     }
   |}
 ];
 
-module GetNoneQuery = ReasonApollo.CreateQuery(GetAllNone);
+// module GetNoneQuery = ReasonApollo.CreateQuery(GetAllNone);
+
+module CreateJerkMutation = ReasonApollo.CreateMutation(CreateJerk);
 
 let styles =
   StyleSheet.create(
@@ -54,28 +58,42 @@ let make = _children => {
 
   render: self =>
     <ReasonApollo.Provider client=Client.instance>
-      <GetNoneQuery>
-        ...{({result, _}) =>
-          switch (result) {
-          | Loading => <Text> {"Loading" |> ReasonReact.string} </Text>
-          | Error(_e) => <Text> {"Error" |> ReasonReact.string} </Text>
-          | Data(_) =>
-            <View>
-              <HeartContainer>
-                <Heart filled=true style={styles##explodeHeart} />
-                <Heart filled=true style={styles##explodeHeart} />
-              </HeartContainer>
-              {self.state |> List.length >= 5 ?
-                 <Wave onFinish={_event => self.send(Reset)} /> :
-                 ReasonReact.null}
-              <TriggerContainer onPress={_event => self.send(Click(true))} />
-              <Text style=tempCounterStyle>
-                {ReasonReact.string(string_of_int(self.state |> List.length))}
-              </Text>
-            </View>
-          }
-        }
-      </GetNoneQuery>
+      <CreateJerkMutation>
+        ...{(mutation, {result}) => {
+          let createJerkResult = CreateJerk.make();
+
+          <View>
+            <HeartContainer>
+              <Heart filled=true style={styles##explodeHeart} />
+              <Heart filled=true style={styles##explodeHeart} />
+            </HeartContainer>
+            {self.state |> List.length >= 5 ?
+               <Wave onFinish={_event => self.send(Reset)} /> :
+               ReasonReact.null}
+            <TriggerContainer
+              onPress={_event => {
+                self.send(Click(true));
+                mutation(~variables=createJerkResult##variables, ()) |> ignore;
+              }}
+            />
+            {switch (result) {
+             | Loading => <Text> {ReasonReact.string("Searching")} </Text>
+             | NotCalled => ReasonReact.null
+             | Error(error) =>
+               <Text> {ReasonReact.string(error##message)} </Text>
+             | Data(response) =>
+               Js.log(response);
+
+               <Text>
+                 {response##createJerk##message |> ReasonReact.string}
+               </Text>;
+             }}
+            <Text style=tempCounterStyle>
+              {ReasonReact.string(string_of_int(self.state |> List.length))}
+            </Text>
+          </View>;
+        }}
+      </CreateJerkMutation>
     </ReasonApollo.Provider>,
 };
 

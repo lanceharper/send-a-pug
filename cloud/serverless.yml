@@ -45,8 +45,8 @@ custom:
       level: ALL
     mappingTemplates:
       - dataSource: none
-        type: Query
-        field: getNone
+        type: Mutation
+        field: createJerk
         request: "jerks-request-mapping-template.vtl"
         response: "jerks-response-mapping-template.vtl"
     dataSources:
