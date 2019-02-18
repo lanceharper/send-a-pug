@@ -62,6 +62,6 @@ typings/
 
 # dotenv environment variables file
 .env
-
+cloud/.env
 # Finalized files
 dist/
