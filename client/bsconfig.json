@@ -4,7 +4,12 @@
     "react-jsx": 2
   },
   "refmt": 3,
-  "bs-dependencies": ["bs-react-native", "reason-react", "reason-apollo"],
+  "bs-dependencies": [
+    "bs-fetch",
+    "bs-react-native",
+    "reason-react",
+    "reason-apollo"
+  ],
   "ppx-flags": ["graphql_ppx/ppx"],
   "sources": [
     {

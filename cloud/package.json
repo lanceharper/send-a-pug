@@ -3,6 +3,7 @@
     "update-schema": "./bin/update-appsync-schema.sh"
   },
   "dependencies": {
+    "jsonwebtoken": "^8.4.0",
     "serverless-appsync-plugin": "^1.0.9"
   },
   "devDependencies": {

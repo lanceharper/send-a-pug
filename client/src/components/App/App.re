@@ -56,7 +56,26 @@ let styles =
 
 let make = _children => {
   ...component,
-  didMount: _ => onAuthorized(twitchAuth => Js.log(clientIdGet(twitchAuth))),
+  // didMount: _ => {
+  //   onAuthorized(twitchAuth => Js.log(clientIdGet(twitchAuth)));
+  // },
+  didMount: _ =>
+    onAuthorized(twitchAuth => {
+      Js.log("Foo");
+      "foo" |> Auth.requestUserPoolToken |> ignore;
+
+      ();
+    }),
+  //{
+  //Auth.requestUserPoolToken  "world"
+  // Js.Promise.then_ (
+  //   fun userPoolToken => {
+  //     Js.log(userPoolToken)
+  //   }
+  // ) |> ignore;
+  // Js.log(clientIdGet(twitchAuth));
+  // Js.log(clientIdGet(twitchAuth));
+  //}
 
   initialState: () => [],
 

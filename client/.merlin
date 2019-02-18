@@ -6,6 +6,8 @@ S /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/bs-platform/li
 B /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/bs-platform/lib/ocaml
 FLG -nostdlib -color always
 FLG -w -30-40+6+7+27+32..39+44+45+101
+S /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/bs-fetch/lib/ocaml
+B /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/bs-fetch/lib/ocaml
 S /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/bs-react-native/lib/ocaml
 B /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/bs-react-native/lib/ocaml
 S /Users/lanceharper/Repositories/jerk-twitch/client/node_modules/reason-react/lib/ocaml
