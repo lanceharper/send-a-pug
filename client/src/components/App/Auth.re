@@ -1,6 +1,6 @@
 open Bs_fetch;
 
-let endpoint = "https://9aheowxvg9.execute-api.us-west-2.amazonaws.com/dev/users/twitch-auth";
+let endpoint = "https://ga99jrhfdc.execute-api.us-west-2.amazonaws.com/dev/users/twitch-auth";
 
 let requestUserPoolToken = twitchToken => {
   let payload = Js.Dict.empty();

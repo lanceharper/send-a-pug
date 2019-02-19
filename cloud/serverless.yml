@@ -28,7 +28,15 @@ provider:
   runtime: nodejs8.10
   region: ${opt:region, "us-west-2"}
   stage: ${opt:stage, "dev"}
-
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "cognito-idp:AdminCreateUser"
+        - "cognito-idp:AdminInitiateAuth"
+        - "cognito-idp:AdminRespondToAuthChallenge"
+        - "cognito-idp:AdminGetUser"
+        - "cognito-idp:AdminUpdateUserAttributes"
+      Resource: { Fn::GetAtt: [AppSyncLoggingServiceRole, Arn] }
 custom:
   api: ${self:provider.stage}-jerk
   # AWS Amplify configuration

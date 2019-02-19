@@ -7,10 +7,10 @@ module AppSyncConfig = {
     "apiKey": string,
   };
   let config = {
-    "graphqlEndpoint": "https://iej7kez7cjhr7emzp5kn76wt24.appsync-api.us-west-2.amazonaws.com/graphql",
+    "graphqlEndpoint": "https://5omqgexqabbgtkqwfwanlngtr4.appsync-api.us-west-2.amazonaws.com/graphql",
     "region": "us-west-2",
     "authenticationType": "API_KEY",
-    "apiKey": "da2-xcepzyehbfemxg5qdjbyf6qsl4",
+    "apiKey": "da2-35mujn46vjgubptk27cqodhugi",
   };
 };
 
