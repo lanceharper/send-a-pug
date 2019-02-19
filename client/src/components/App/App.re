@@ -56,26 +56,14 @@ let styles =
 
 let make = _children => {
   ...component,
-  // didMount: _ => {
-  //   onAuthorized(twitchAuth => Js.log(clientIdGet(twitchAuth)));
-  // },
+
   didMount: _ =>
     onAuthorized(twitchAuth => {
-      Js.log("Foo");
-      "foo" |> Auth.requestUserPoolToken |> ignore;
+      Js.log(tokenGet(twitchAuth));
+      tokenGet(twitchAuth) |> Auth.requestUserPoolToken |> ignore;
 
       ();
     }),
-  //{
-  //Auth.requestUserPoolToken  "world"
-  // Js.Promise.then_ (
-  //   fun userPoolToken => {
-  //     Js.log(userPoolToken)
-  //   }
-  // ) |> ignore;
-  // Js.log(clientIdGet(twitchAuth));
-  // Js.log(clientIdGet(twitchAuth));
-  //}
 
   initialState: () => [],
 
@@ -103,9 +91,10 @@ let make = _children => {
                <Wave onFinish={_event => self.send(Reset)} /> :
                ReasonReact.null}
             <TriggerContainer
-              onPress={_event =>
-                mutation(~variables=createJerkResult##variables, ()) |> ignore
-              }
+              onPress={_event => {
+                self.send(Click(true));
+                mutation(~variables=createJerkResult##variables, ()) |> ignore;
+              }}
             />
             {switch (result) {
              | Loading => <Text> {ReasonReact.string("Searching")} </Text>

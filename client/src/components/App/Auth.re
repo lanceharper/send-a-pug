@@ -4,7 +4,7 @@ let endpoint = "https://9aheowxvg9.execute-api.us-west-2.amazonaws.com/dev/users
 
 let requestUserPoolToken = twitchToken => {
   let payload = Js.Dict.empty();
-  Js.Dict.set(payload, "hello", Js.Json.string(twitchToken));
+  Js.Dict.set(payload, "twitchToken", Js.Json.string(twitchToken));
 
   Js.Promise.(
     Fetch.fetchWithInit(
