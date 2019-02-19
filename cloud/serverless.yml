@@ -79,6 +79,35 @@ resources:
                   Resource:
                     - "arn:aws:logs:#{AWS::Region}:#{AWS::AccountId}:*"
 
+    CognitoUserPoolUsers:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:custom.api}
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: true
+        # Schema:
+        # - Name: email
+        #   Required: true
+        #   Mutable: true
+        # - Name: pet
+        #   Required: false
+        #   Mutable: false
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
+            RequireLowercase: false
+            RequireUppercase: false
+            RequireNumbers: false
+            RequireSymbols: false
+        MfaConfiguration: OFF
+
+    WebUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${self:custom.api}-web
+        GenerateSecret: false
+        UserPoolId: { Ref: CognitoUserPoolUsers }
+
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
