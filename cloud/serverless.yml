@@ -28,6 +28,9 @@ provider:
   runtime: nodejs8.10
   region: ${opt:region, "us-west-2"}
   stage: ${opt:stage, "dev"}
+  environment:
+    TWITCH_CLIENT_ID: l9ry5f7b21xi9lsmjh21nef9issxce
+    USER_POOL_ID: { Ref: CognitoUserPoolUsers }
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -36,7 +39,7 @@ provider:
         - "cognito-idp:AdminRespondToAuthChallenge"
         - "cognito-idp:AdminGetUser"
         - "cognito-idp:AdminUpdateUserAttributes"
-      Resource: { Fn::GetAtt: [AppSyncLoggingServiceRole, Arn] }
+      Resource: { Fn::GetAtt: [CognitoUserPoolUsers, Arn] }
 custom:
   api: ${self:provider.stage}-jerk
   # AWS Amplify configuration
@@ -93,8 +96,10 @@ resources:
         UserPoolName: ${self:custom.api}
         AdminCreateUserConfig:
           AllowAdminCreateUserOnly: true
+        AliasAttributes:
+          - preferred_username
         # Schema:
-        # - Name: email
+        #  - Name: email
         #   Required: true
         #   Mutable: true
         # - Name: pet
@@ -137,8 +142,6 @@ resources:
 #            - "/*"
 
 # you can define service wide environment variables here
-#  environment:
-#    variable1: value1
 
 # you can add packaging information here
 #package:

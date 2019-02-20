@@ -4,7 +4,9 @@
   },
   "dependencies": {
     "jsonwebtoken": "^8.4.0",
-    "serverless-appsync-plugin": "^1.0.9"
+    "node-fetch": "^2.3.0",
+    "serverless-appsync-plugin": "^1.0.9",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "aws-sdk": "^2.400.0",
