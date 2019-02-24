@@ -51,7 +51,7 @@ let styles =
     },
   );
 
-let make = _children => {
+let make = (~token, _children) => {
   ...component,
 
   initialState: () => [],
@@ -66,7 +66,7 @@ let make = _children => {
     },
 
   render: self =>
-    <ReasonApollo.Provider client=Client.instance>
+    <ReasonApollo.Provider client={Client.instance(token)}>
       <CreateJerkMutation>
         ...{(mutation, {result}) => {
           let createJerkResult = CreateJerk.make();
@@ -106,8 +106,8 @@ let make = _children => {
       <JerkCreatedSubscription>
         ...{({result}) =>
           switch (result) {
-          | Loading => <div />
-          | Error(_error) => <div />
+          | Loading => <Text> {"loading" |> ReasonReact.string} </Text>
+          | Error(_error) => <Text> {"error" |> ReasonReact.string} </Text>
           | Data(response) =>
             switch (response##inbox) {
             | None => <Text> {"No Message" |> ReasonReact.string} </Text>
@@ -119,5 +119,3 @@ let make = _children => {
       </JerkCreatedSubscription>
     </ReasonApollo.Provider>,
 };
-
-let default = ReasonReact.wrapReasonForJs(~component, _ => make([||]));

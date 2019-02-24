@@ -1,9 +1,9 @@
 open AWS.AppSyncConfig;
 
-let instance =
+let instance = jwtToken =>
   AWS.AppSync.createAWSAppSyncClient(
     ~url=config##graphqlEndpoint,
     ~region=config##region,
-    ~auth={"type": config##authenticationType, "apiKey": config##apiKey},
+    ~auth={"type": config##authenticationType, "jwtToken": jwtToken},
     (),
   );

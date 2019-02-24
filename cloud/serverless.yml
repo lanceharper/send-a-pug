@@ -51,7 +51,10 @@ custom:
   #     appClient: WebUserPoolClient
   appSync:
     name: ${self:custom.api}
-    authenticationType: API_KEY
+    authenticationType: AMAZON_COGNITO_USER_POOLS
+    userPoolConfig:
+      defaultAction: ALLOW
+      userPoolId: { Ref: CognitoUserPoolUsers }
     schema: ../shared/schema.graphql
     logConfig:
       loggingRoleArn: { Fn::GetAtt: [AppSyncLoggingServiceRole, Arn] }

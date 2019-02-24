@@ -8,7 +8,8 @@
     "bs-fetch",
     "bs-react-native",
     "reason-react",
-    "reason-apollo"
+    "reason-apollo",
+    "@glennsl/bs-json"
   ],
   "ppx-flags": ["graphql_ppx/ppx"],
   "sources": [

@@ -4,13 +4,12 @@ module AppSyncConfig = {
     "graphqlEndpoint": string,
     "region": string,
     "authenticationType": string,
-    "apiKey": string,
+    "jwtToken": string,
   };
   let config = {
     "graphqlEndpoint": "https://5omqgexqabbgtkqwfwanlngtr4.appsync-api.us-west-2.amazonaws.com/graphql",
     "region": "us-west-2",
-    "authenticationType": "API_KEY",
-    "apiKey": "da2-35mujn46vjgubptk27cqodhugi",
+    "authenticationType": "AMAZON_COGNITO_USER_POOLS",
   };
 };
 
@@ -25,7 +24,7 @@ module AppSync = {
         Js.Nullable.t({
           .
           "type": string,
-          "apiKey": string,
+          "jwtToken": string,
         }),
     } =>
     'a =
