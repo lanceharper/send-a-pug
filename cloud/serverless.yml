@@ -31,6 +31,7 @@ provider:
   environment:
     TWITCH_CLIENT_ID: l9ry5f7b21xi9lsmjh21nef9issxce
     USER_POOL_ID: { Ref: CognitoUserPoolUsers }
+    USER_POOL_CLIENT_ID: { Ref: WebUserPoolClient }
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -38,6 +39,7 @@ provider:
         - "cognito-idp:AdminInitiateAuth"
         - "cognito-idp:AdminRespondToAuthChallenge"
         - "cognito-idp:AdminGetUser"
+        - "cognito-idp:AdminConfirmSignUp"
         - "cognito-idp:AdminUpdateUserAttributes"
       Resource: { Fn::GetAtt: [CognitoUserPoolUsers, Arn] }
 custom:
@@ -118,6 +120,8 @@ resources:
       Type: AWS::Cognito::UserPoolClient
       Properties:
         ClientName: ${self:custom.api}-web
+        ExplicitAuthFlows:
+          - ADMIN_NO_SRP_AUTH
         GenerateSecret: false
         UserPoolId: { Ref: CognitoUserPoolUsers }
 

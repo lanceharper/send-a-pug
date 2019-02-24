@@ -9,7 +9,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "aws-sdk": "^2.400.0",
+    "aws-sdk": "^2.409.0",
     "serverless-cf-vars": "^0.3.0"
   }
 }
