@@ -92,7 +92,6 @@ let make = (~token, _children) => {
                <Text> {ReasonReact.string(error##message)} </Text>
              | Data(response) =>
                Js.log(response);
-
                <Text>
                  {response##createJerk##message |> ReasonReact.string}
                </Text>;
