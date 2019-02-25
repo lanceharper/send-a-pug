@@ -33,8 +33,7 @@ let make = (~token, ~displayName, ~channelId, _children) => {
           | Data(response) =>
             switch (response##inbox) {
             | None => <Text> {"No Message" |> ReasonReact.string} </Text>
-            | Some(inboxResponse) =>
-              <Text> {inboxResponse##from |> ReasonReact.string} </Text>
+            | Some(inboxResponse) => <JerkList inboxResponse />
             }
           };
         }}

@@ -13,5 +13,5 @@ module.exports.handler = async (event, context) => {
 
   // const recordResponse = await kinesis.putRecord(recordParams).promise();
 
-  return { ...event.arguments, sentAt: "now" };
+  return { ...event.arguments, sentAt: new Date().toISOString() };
 };
