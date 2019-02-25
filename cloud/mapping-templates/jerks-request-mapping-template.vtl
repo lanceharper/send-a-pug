@@ -1,9 +1,5 @@
 {
-    "version": "2017-02-28",
-    "payload": {
-      "from": "me",
-      "message": "${context.arguments.message}",
-      "to":  "${context.arguments.to}",
-      "sentAt": "$util.time.nowISO8601()"
-    }
+  "version": "2017-02-28",
+  "operation": "Invoke",
+  "payload": $utils.toJson($context)
 }

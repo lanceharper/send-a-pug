@@ -3,19 +3,26 @@
 open BsReactNative;
 open Twitch;
 
-type authenticationResult = {accessToken: string};
+type authenticationResult = {
+  accessToken: string,
+  displayName: string,
+  channelId: string,
+};
 
 let decodeAuthenticationResult = json =>
-  Json.Decode.{accessToken: json |> field("AccessToken", string)};
+  Json.Decode.{
+    accessToken: json |> field("AccessToken", string),
+    displayName: json |> field("displayName", string),
+    channelId: json |> field("channelId", string),
+  };
 
-type token = string;
 type isAuthenticated = bool;
 
 type action =
-  | Authenticate(string);
+  | Authenticate(authenticationResult);
 
 type state =
-  | Some(token)
+  | Some(authenticationResult)
   | None;
 
 let component = ReasonReact.reducerComponent("App");
@@ -33,7 +40,7 @@ let make = _children => {
              |> decodeAuthenticationResult
              |> (
                authenticationResult =>
-                 self.send(Authenticate(authenticationResult.accessToken))
+                 self.send(Authenticate(authenticationResult))
              )
              |> resolve
            )
@@ -45,12 +52,18 @@ let make = _children => {
 
   reducer: (action, _state) =>
     switch (action) {
-    | Authenticate(token) => ReasonReact.Update(Some(token))
+    | Authenticate(authenticationResult) =>
+      ReasonReact.Update(Some(authenticationResult))
     },
   render: self =>
     <View>
       {switch (self.state) {
-       | Some(token) => <Authenticated token />
+       | Some(authenticationResult) =>
+         <Authenticated
+           token={authenticationResult.accessToken}
+           displayName={authenticationResult.displayName}
+           channelId={authenticationResult.channelId}
+         />
        | None => ReasonReact.null
        }}
     </View>,

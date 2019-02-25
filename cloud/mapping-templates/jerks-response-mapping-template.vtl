@@ -1,6 +1,1 @@
-{
-  "from": "${context.result.from}",
-  "message": "${context.result.message}",
-  "to":  "${context.result.to}",
-  "sentAt": "${context.result.sentAt}"
-}
+$utils.toJson($context.result)

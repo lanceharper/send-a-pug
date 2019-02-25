@@ -142,10 +142,18 @@ module.exports.hello = async (event, context) => {
         cognitoUser,
         cognitoAuthResponse
       );
-      return response(200, challengeResponse.AuthenticationResult);
+      return response(200, {
+        ...challengeResponse.AuthenticationResult,
+        displayName: twitchUser.display_name,
+        channelId: payload.channel_id
+      });
     } else if (cognitoUser.UserStatus === "CONFIRMED") {
       const cognitoAuthResponse = await initiateCognitoAuth(cognitoUser);
-      return response(200, cognitoAuthResponse.AuthenticationResult);
+      return response(200, {
+        ...cognitoAuthResponse.AuthenticationResult,
+        displayName: twitchUser.display_name,
+        channelId: payload.channel_id
+      });
     }
 
     return response(500, JSON.stringify(payload));

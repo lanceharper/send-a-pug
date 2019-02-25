@@ -53,14 +53,16 @@ custom:
       loggingRoleArn: { Fn::GetAtt: [AppSyncLoggingServiceRole, Arn] }
       level: ALL
     mappingTemplates:
-      - dataSource: none
+      - dataSource: createJerk
         type: Mutation
         field: createJerk
         request: "jerks-request-mapping-template.vtl"
         response: "jerks-response-mapping-template.vtl"
     dataSources:
-      - type: NONE
-        name: none
+      - type: AWS_LAMBDA
+        name: createJerk
+        config:
+          lambdaFunctionArn: { Fn::GetAtt: ["CreateJerkLambdaFunction", Arn] }
 
 resources:
   Resources:

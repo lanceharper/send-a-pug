@@ -16,7 +16,8 @@ type Jerk {
 }
 
 type Mutation {
-  createJerk(message: String!, to: String): Jerk!
+  # TODO: take token and decode on server to get these values
+  createJerk(from: String!, message: String!, to: String): Jerk!
 }
 
 type Query {
