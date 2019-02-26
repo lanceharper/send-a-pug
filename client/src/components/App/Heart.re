@@ -3,32 +3,21 @@ open BsReactNative;
 let styles =
   StyleSheet.create(
     Style.{
-      "heart":
-        style([width(Pt(50.)), height(Pt(50.)), position(Absolute)]),
-      "heartShape":
+      "pug": style([width(Pt(50.)), height(Pt(50.))]),
+      "pugShape":
         style([
-          width(Pt(30.)),
-          height(Pt(45.)),
-          position(Absolute),
+          width(Pt(40.)),
+          height(Pt(40.)),
+          borderRadius(20.),
           top(Pt(0.)),
-          borderTopLeftRadius(15.),
-          borderTopRightRadius(15.),
-          backgroundColor(String("slateblue")),
         ]),
-      "leftHeart":
-        style([Transform.make(~rotate="-45deg", ()), left(Pt(5.))]),
-      "rightHeart":
-        style([Transform.make(~rotate="45deg", ()), right(Pt(5.))]),
+
       "textContainer":
         style([
-          width(Pt(60.)),
-          height(Pt(45.)),
-          position(Absolute),
-          top(Pt(0.)),
-          justifyContent(Center),
           alignItems(Center),
           backgroundColor(String("transparent")),
         ]),
+      "text": style([fontFamily("Fredoka One"), color(String("white"))]),
     },
   );
 
@@ -48,11 +37,23 @@ let make = (~style, ~heartAnimation, ~height, ~clickedBy, _children) => {
     );
   },
   render: _self => {
-    <Animated.View style={Style.concat([styles##heart, style])}>
-      <View style={Style.concat([styles##heartShape, styles##leftHeart])} />
-      <View style={Style.concat([styles##heartShape, styles##rightHeart])} />
+    <Animated.View style={Style.concat([styles##pug, style])}>
+      <Image
+        style=styles##pugShape
+        source={
+                 `URI(
+                   Image.(
+                     imageURISource(
+                       ~uri=
+                         "https://s3-us-west-2.amazonaws.com/jerk-twitch/pug.svg",
+                       (),
+                     )
+                   ),
+                 )
+               }
+      />
       <View style=styles##textContainer>
-        <Text> {clickedBy |> ReasonReact.string} </Text>
+        <Text style=styles##text> {clickedBy |> ReasonReact.string} </Text>
       </View>
     </Animated.View>;
   },

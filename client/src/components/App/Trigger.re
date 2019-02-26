@@ -21,6 +21,19 @@ let make = (~onPress, _children) => {
   ...component,
   render: _self =>
     <TouchableWithoutFeedback onPress={_self => onPress(true)}>
-      <View style=containerStyle />
+      <Image
+        style=containerStyle
+        source={
+                 `URI(
+                   Image.(
+                     imageURISource(
+                       ~uri=
+                         "https://s3-us-west-2.amazonaws.com/jerk-twitch/pug.svg",
+                       (),
+                     )
+                   ),
+                 )
+               }
+      />
     </TouchableWithoutFeedback>,
 };
