@@ -38,6 +38,9 @@ let containerStyle =
     ])
   );
 
+let grantAccessStyle =
+  Style.(style([fontFamily("Fredoka One"), color(String("white"))]));
+
 let make = _children => {
   ...component,
 
@@ -75,7 +78,10 @@ let make = _children => {
            displayName={authenticationResult.displayName}
            channelId={authenticationResult.channelId}
          />
-       | None => ReasonReact.null
+       | None =>
+         <Text style=grantAccessStyle>
+           {"Grant Access to Send Pugs!" |> ReasonReact.string}
+         </Text>
        }}
     </View>,
 };
