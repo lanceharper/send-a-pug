@@ -23,7 +23,6 @@ let make = (~token, ~displayName, ~channelId, _children) => {
     let jerkSubcription = JerkCreated.make(~channelId, ());
 
     <ReasonApollo.Provider client={Client.instance(token)}>
-      <NewJerk displayName channelId />
       <JerkCreatedSubscription variables=jerkSubcription##variables>
         ...{({result}) => {
           Js.log(result);
@@ -38,6 +37,7 @@ let make = (~token, ~displayName, ~channelId, _children) => {
           };
         }}
       </JerkCreatedSubscription>
+      <NewJerk displayName channelId />
     </ReasonApollo.Provider>;
   },
 };

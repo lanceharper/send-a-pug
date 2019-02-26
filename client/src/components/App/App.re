@@ -27,6 +27,17 @@ type state =
 
 let component = ReasonReact.reducerComponent("App");
 
+let containerStyle =
+  Style.(
+    style([
+      flex(1.0),
+      height(Pt(600.)),
+      justifyContent(FlexEnd),
+      paddingBottom(Pt(20.)),
+      backgroundColor(String("transparent")),
+    ])
+  );
+
 let make = _children => {
   ...component,
 
@@ -56,7 +67,7 @@ let make = _children => {
       ReasonReact.Update(Some(authenticationResult))
     },
   render: self =>
-    <View>
+    <View style=containerStyle>
       {switch (self.state) {
        | Some(authenticationResult) =>
          <Authenticated

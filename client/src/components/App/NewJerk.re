@@ -57,12 +57,6 @@ let make = (~displayName, ~channelId, _children) => {
         let createJerkResult = CreateJerk.make(~channelId, ~displayName, ());
 
         <View>
-          <HeartContainer>
-            <Heart filled=true style={styles##explodeHeart} />
-            <Heart filled=true style={styles##explodeHeart} />
-          </HeartContainer>
-          {self.state |> List.length >= 5 ?
-             <Wave onFinish={_event => self.send(Reset)} /> : ReasonReact.null}
           <TriggerContainer
             onPress={_event => {
               self.send(Click(true));
@@ -70,15 +64,7 @@ let make = (~displayName, ~channelId, _children) => {
             }}
           />
           {switch (result) {
-           | Loading => <Text> {ReasonReact.string("Searching")} </Text>
-           | NotCalled => ReasonReact.null
-           | Error(error) =>
-             <Text> {ReasonReact.string(error##message)} </Text>
-           | Data(response) =>
-             Js.log(response);
-             <Text>
-               {response##createJerk##message |> ReasonReact.string}
-             </Text>;
+           | _ => ReasonReact.null
            }}
           <Text style=tempCounterStyle>
             {ReasonReact.string(string_of_int(self.state |> List.length))}

@@ -4,10 +4,12 @@ type clickable = {clicked: bool};
 let containerStyle =
   Style.(
     style([
-      borderRadius(40.),
-      height(Pt(80.)),
-      width(Pt(80.)),
-      backgroundColor(String("white")),
+      borderRadius(20.),
+      height(Pt(40.)),
+      width(Pt(40.)),
+      marginBottom(Pt(80.)),
+      marginLeft(Pt(20.)),
+      backgroundColor(String("slateblue")),
       justifyContent(Center),
       alignItems(Center),
     ])
@@ -19,8 +21,6 @@ let make = (~onPress, _children) => {
   ...component,
   render: _self =>
     <TouchableWithoutFeedback onPress={_self => onPress(true)}>
-      <View style=containerStyle>
-        <Heart filled=true style=Style.(style([])) />
-      </View>
+      <View style=containerStyle />
     </TouchableWithoutFeedback>,
 };
