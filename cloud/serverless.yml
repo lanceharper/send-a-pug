@@ -32,13 +32,24 @@ provider:
       Action:
         - "kinesis:PutRecord"
       Resource: { Fn::GetAtt: [KinesisStream, Arn] }
-    - Effect: Allow
+    - Effect: "Allow"
       Action:
         - "logs:CreateLogGroup"
         - "logs:CreateLogStream"
         - "logs:PutLogEvents"
       Resource:
         - "arn:aws:logs:#{AWS::Region}:#{AWS::AccountId}:*"
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+        - dynamodb:BatchGetItem
+      Resource: { Fn::GetAtt: [LeadersTable, Arn] }
 custom:
   api: ${self:provider.stage}-jerk
 
@@ -58,11 +69,21 @@ custom:
         field: createJerk
         request: "jerks-request-mapping-template.vtl"
         response: "jerks-response-mapping-template.vtl"
+      - dataSource: Leaders
+        type: Query
+        field: listLeaders
+        request: "leaderboard-request-mapping-template.vtl"
+        response: "leaderboard-response-mapping-template.vtl"
     dataSources:
       - type: AWS_LAMBDA
         name: createJerk
         config:
           lambdaFunctionArn: { Fn::GetAtt: ["CreateJerkLambdaFunction", Arn] }
+      - type: AMAZON_DYNAMODB
+        name: Leaders
+        description: "Leaders table"
+        config:
+          tableName: { Ref: LeadersTable }
 
 resources:
   Resources:
@@ -121,6 +142,19 @@ resources:
       Properties:
         Name: ${self:custom.api}-stream
         ShardCount: 1
+
+    LeadersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.api}-leaders
+        AttributeDefinitions:
+          - AttributeName: streamer_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: streamer_id
+            KeyType: HASH
+
+        BillingMode: PAY_PER_REQUEST
 
 functions:
   hello:

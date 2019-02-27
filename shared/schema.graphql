@@ -15,11 +15,20 @@ type Jerk {
   sentAt: String!
 }
 
+type LeaderboardEntry {
+  player: String!
+  score: Int!
+}
+
+type LeaderboardEntryConnection {
+  items: [LeaderboardEntry]
+}
+
 type Mutation {
   # TODO: take token and decode on server to get these values
   createJerk(from: String!, message: String!, to: String): Jerk!
 }
 
 type Query {
-  me: String
+  listLeaders(streamer_id: String!): LeaderboardEntryConnection
 }
