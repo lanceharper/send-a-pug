@@ -8,3 +8,4 @@ client/.bsb.lock
 client/.graphql_ppx_cache/graphql_schema.json.hash
 cloud/.env
 cloud/verify.js
+.DS_Store

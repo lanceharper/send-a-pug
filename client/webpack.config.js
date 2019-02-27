@@ -26,7 +26,7 @@ module.exports = (_env, argv) => {
     Config: {
       path: "./src/Config.js",
       outputHtml: "config.html",
-      build: true
+      build: false
     },
     LiveConfig: {
       path: "./src/LiveConfig.js",
@@ -36,7 +36,7 @@ module.exports = (_env, argv) => {
     Mobile: {
       path: "./src/Mobile.js",
       outputHtml: "mobile.html",
-      build: true
+      build: false
     }
   };
 
