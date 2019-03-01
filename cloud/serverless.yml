@@ -174,5 +174,5 @@ functions:
 
   aggregateJerk:
     handler: aggregateJerk.handler
-    # environment:
-    #   JERK_STREAM: { Ref: KinesisStream }
+    environment:
+      LEADERS_TABLE: { Ref: LeadersTable }

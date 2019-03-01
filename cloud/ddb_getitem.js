@@ -14,36 +14,34 @@ var params = {
   ProjectionExpression: "streamer_id, leaderboard"
 };
 
+var js = {
+  streamer_id: "puglugger",
+  leaderboard: [
+    {
+      player: "puglugger",
+      score: 100
+    },
+    {
+      player: "pugloogr",
+      score: 300
+    },
+    {
+      player: "puglaagr",
+      score: 500
+    }
+  ]
+};
+
 var putParams = {
   TableName: "dev-jerk-leaders",
-  Item: {
-    streamer_id: {
-      S: "puglugger"
-    },
-    leaderboard: {
-      L: [
-        {
-          M: {
-            player: { S: "puglugger" },
-            score: { N: "100" }
-          }
-        },
-        {
-          M: {
-            player: { S: "pugloogr" },
-            score: { N: "200" }
-          }
-        }
-      ]
-    }
-  }
+  Item: AWS.DynamoDB.Converter.marshall(js)
 };
 
 ddb.getItem(params, function(err, data) {
   if (err) {
     console.log("Error", err);
   } else {
-    console.log("Success", data.Item);
+    console.log("Success", AWS.DynamoDB.Converter.unmarshall(data.Item));
   }
 });
 
