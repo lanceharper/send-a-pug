@@ -1,8 +1,6 @@
-console.log("Loading function");
-
 const AWS = require("aws-sdk");
 
-// AWS.config.update({ region: "us-west-2" });
+AWS.config.update({ region: "us-west-2" });
 
 const ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
@@ -17,16 +15,9 @@ exports.handler = async event => {
     try {
       const recordData = Buffer.from(record.data, "base64");
 
-      let { streamer_id, user_id, PUG_COUNT, ...restRecord } = JSON.parse(
+      let { streamer_id, user_id, PUG_COUNT } = JSON.parse(
         recordData.toString("ascii")
       );
-
-      console.log("new record", {
-        streamer_id,
-        user_id,
-        PUG_COUNT,
-        restRecord
-      });
 
       if (!streamerToLeaderboardEntryMap.has(streamer_id)) {
         streamerToLeaderboardEntryMap.set(
@@ -52,92 +43,67 @@ exports.handler = async event => {
     }
   });
 
-  console.log("streamerToLeaderboardEntryMap", streamerToLeaderboardEntryMap);
+  for (const [streamer_id, userToScoreMap] of streamerToLeaderboardEntryMap) {
+    try {
+      const previousLeaderboardForSteamerDDBParams = {
+        TableName: process.env.LEADERS_TABLE,
+        Key: {
+          streamer_id: { S: streamer_id }
+        },
+        ProjectionExpression: "streamer_id, leaderboard"
+      };
 
-  await streamerToLeaderboardEntryMap.forEach(
-    async (userToScoreMap, streamer_id) => {
-      try {
-        const previousLeaderboardForSteamerDDBParams = {
-          TableName: process.env.LEADERS_TABLE,
-          Key: {
-            streamer_id: { S: streamer_id }
-          },
-          ProjectionExpression: "streamer_id, leaderboard"
-        };
+      const { Item: previousLeaderboardDDBItem } = await ddb
+        .getItem(previousLeaderboardForSteamerDDBParams)
+        .promise();
 
-        const { Item: previousLeaderboardDDBItem } = await ddb
-          .getItem(previousLeaderboardForSteamerDDBParams)
-          .promise();
+      const previousLeaderboardForStreamer = previousLeaderboardDDBItem
+        ? AWS.DynamoDB.Converter.unmarshall(previousLeaderboardDDBItem)
+        : {
+            streamer_id,
+            leaderboard: []
+          };
 
-        const previousLeaderboardForStreamer = previousLeaderboardDDBItem
-          ? AWS.DynamoDB.Converter.unmarshall(previousLeaderboardDDBItem)
-          : {
-              streamer_id,
-              leaderboard: []
-            };
+      let { leaderboard } = previousLeaderboardForStreamer;
 
-        console.log(
-          "previousLeaderboardForStreamer",
-          previousLeaderboardForStreamer
+      userToScoreMap.forEach((PUG_COUNT, user_id) => {
+        const previousLeaderboardPlayerEntryIndex = previousLeaderboardForStreamer.leaderboard.findIndex(
+          ({ player }) => user_id === player
         );
 
-        let leaderboard = [];
-
-        userToScoreMap.forEach((PUG_COUNT, user_id) => {
-          console.log("PUG_COUNT, user_id", { PUG_COUNT, user_id });
-
-          console.log(
-            "previousLeaderboardForStreamer.leaderboard",
-            previousLeaderboardForStreamer.leaderboard
-          );
-
-          const previousLeaderboardPlayerEntry = previousLeaderboardForStreamer.leaderboard.find(
-            ({ player }) => user_id === player
-          );
-
-          console.log(
-            "previousLeaderboardPlayerEntry",
-            previousLeaderboardPlayerEntry
-          );
-
+        if (previousLeaderboardPlayerEntryIndex > -1) {
+          // player already exists in leaderboard so bump score from latest window
+          leaderboard[previousLeaderboardPlayerEntryIndex].score += PUG_COUNT;
+        } else {
+          // player previously did not exist in leaderboard
           leaderboard.push({
             player: user_id,
-            score: previousLeaderboardPlayerEntry
-              ? previousLeaderboardPlayerEntry.score + PUG_COUNT
-              : PUG_COUNT
+            score: PUG_COUNT
           });
-        });
+        }
+      });
 
-        // If there are previous scores for a streamer's user,
-        // increase their total score by the amount returned over the last time window
-        const updatedScoresForStreamer = {
-          streamer_id,
-          leaderboard
-        };
+      const updatedScoresForStreamer = {
+        streamer_id,
+        leaderboard: leaderboard.sort(
+          ({ score: aScore }, { score: bScore }) => bScore - aScore
+        )
+      };
 
-        console.log("updatedScoresForStreamer", updatedScoresForStreamer);
+      updatedScoresForStreamerPutParams = {
+        TableName: process.env.LEADERS_TABLE,
+        Item: AWS.DynamoDB.Converter.marshall(updatedScoresForStreamer)
+      };
 
-        updatedScoresForStreamerPutParams = {
-          TableName: process.env.LEADERS_TABLE,
-          Item: AWS.DynamoDB.Converter.marshall(updatedScoresForStreamer)
-        };
-
-        console.log(
-          "updatedScoresForStreamerPutParams",
-          updatedScoresForStreamerPutParams
-        );
-        await ddb.putItem(updatedScoresForStreamerPutParams).promise();
-      } catch (error) {
-        console.error(`Failed to update table.`, error);
-      }
+      await ddb.putItem(updatedScoresForStreamerPutParams).promise();
+    } catch (error) {
+      console.error(`Failed to update table.`, error);
     }
-  );
+  }
 
   console.log(
     `Successfully delivered records ${success}, Failed delivered records ${failure}.`
   );
-
-  console.log("output", recordOutput);
 
   return {
     records: recordOutput

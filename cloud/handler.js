@@ -8,6 +8,7 @@ const newUserPassword = "f00BarBaz";
 const verifyAndDecode = twitchToken => {
   try {
     const secret = process.env.JERK_TWITCH_SECRET;
+
     return jwt.verify(twitchToken, Buffer.from(secret, "base64"), {
       algorithms: ["HS256"]
     });
