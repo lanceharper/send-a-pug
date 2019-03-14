@@ -21,7 +21,7 @@ type LeaderboardEntry {
 }
 
 type LeaderboardEntryConnection {
-  items: [LeaderboardEntry]
+  items: [LeaderboardEntry!]!
 }
 
 type Mutation {

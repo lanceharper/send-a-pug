@@ -23,9 +23,9 @@ let make = (~token, ~displayName, ~channelId, _children) => {
     let jerkSubcription = JerkCreated.make(~channelId, ());
 
     <ReasonApollo.Provider client={Client.instance(token)}>
+      <Leaderboard />
       <JerkCreatedSubscription variables=jerkSubcription##variables>
-        ...{({result}) => {
-          Js.log(result);
+        ...{({result}) =>
           switch (result) {
           | Loading => <Text> {"loading" |> ReasonReact.string} </Text>
           | Error(_error) => <Text> {"error" |> ReasonReact.string} </Text>
@@ -34,10 +34,9 @@ let make = (~token, ~displayName, ~channelId, _children) => {
             | None => <Text> {"No Message" |> ReasonReact.string} </Text>
             | Some(inboxResponse) => <JerkList inboxResponse />
             }
-          };
-        }}
+          }
+        }
       </JerkCreatedSubscription>
-      <Leaderboard />
       <NewJerk displayName channelId />
     </ReasonApollo.Provider>;
   },
