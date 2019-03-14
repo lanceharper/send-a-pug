@@ -90,7 +90,7 @@ exports.handler = async event => {
         )
       };
 
-      updatedScoresForStreamerPutParams = {
+      const updatedScoresForStreamerPutParams = {
         TableName: process.env.LEADERS_TABLE,
         Item: AWS.DynamoDB.Converter.marshall(updatedScoresForStreamer)
       };

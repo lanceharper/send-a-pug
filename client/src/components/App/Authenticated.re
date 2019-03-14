@@ -37,6 +37,7 @@ let make = (~token, ~displayName, ~channelId, _children) => {
           };
         }}
       </JerkCreatedSubscription>
+      <Leaderboard />
       <NewJerk displayName channelId />
     </ReasonApollo.Provider>;
   },
