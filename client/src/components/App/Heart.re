@@ -3,7 +3,7 @@ open BsReactNative;
 let styles =
   StyleSheet.create(
     Style.{
-      "pug": style([width(Pt(50.)), height(Pt(50.))]),
+      "pug": style([width(Pt(50.)), height(Pt(50.)), padding(Pt(5.))]),
       "pugShape":
         style([
           width(Pt(40.)),
@@ -40,12 +40,13 @@ let make = (~style, ~heartAnimation, ~height, ~clickedBy, _children) => {
     <Animated.View style={Style.concat([styles##pug, style])}>
       <Image
         style=styles##pugShape
+        resizeMode=`contain
         source={
                  `URI(
                    Image.(
                      imageURISource(
                        ~uri=
-                         "https://s3-us-west-2.amazonaws.com/jerk-twitch/pug.svg",
+                         "https://s3-us-west-2.amazonaws.com/jerk-twitch/pug2.svg",
                        (),
                      )
                    ),
