@@ -31,10 +31,10 @@ let containerStyle =
   Style.(
     style([
       flex(1.0),
-      height(Pt(600.)),
-      justifyContent(FlexEnd),
-      paddingBottom(Pt(20.)),
-      backgroundColor(String("transparent")),
+      height(Pct(100.)),
+      width(Pct(100.)),
+      padding(Pt(8.0)),
+      justifyContent(SpaceBetween),
     ])
   );
 
@@ -71,19 +71,21 @@ let make = _children => {
     },
   render: self =>
     <View style=containerStyle>
-      {switch (self.state) {
-       | Some(authenticationResult) =>
-         <Authenticated
-           token={authenticationResult.accessToken}
-           displayName={authenticationResult.displayName}
-           channelId={authenticationResult.channelId}
-         />
-       | None =>
-         <Text style=grantAccessStyle>
-           {"Grant Access to Send Pugs!" |> ReasonReact.string}
-         </Text>
-       }}
-    </View>,
+      <AppHeader />
+
+        {switch (self.state) {
+         | Some(authenticationResult) =>
+           <Authenticated
+             token={authenticationResult.accessToken}
+             displayName={authenticationResult.displayName}
+             channelId={authenticationResult.channelId}
+           />
+         | None =>
+           <Text style=grantAccessStyle>
+             {"Grant Access to Send Pugs!" |> ReasonReact.string}
+           </Text>
+         }}
+      </View>,
 };
 
 let default = ReasonReact.wrapReasonForJs(~component, _ => make([||]));

@@ -10,17 +10,22 @@ type action =
   | Click(clicked)
   | Reset;
 
-let styles =
-  StyleSheet.create(
-    Style.{
-      "explodeHeart":
-        style([left(Pt(0.)), top(Pt(0.)), position(Absolute)]),
-    },
-  );
-
 let tempCounterStyle = Style.(style([color(String("lightblue"))]));
 
 let component = ReasonReact.reducerComponent("NewJerk");
+
+let containerStyle =
+  Style.(
+    style([
+      position(Absolute),
+      height(Pct(60.0)),
+      width(Pct(30.0)),
+      bottom(Pt(0.0)),
+      left(Pt(0.0)),
+      borderRadius(15.),
+      justifyContent(FlexEnd),
+    ])
+  );
 
 module CreateJerk = [%graphql
   {|
@@ -56,7 +61,7 @@ let make = (~displayName, ~channelId, _children) => {
       ...{(mutation, {result}) => {
         let createJerkResult = CreateJerk.make(~channelId, ~displayName, ());
 
-        <View>
+        <View style=containerStyle>
           <TriggerContainer
             onPress={_event => {
               self.send(Click(true));

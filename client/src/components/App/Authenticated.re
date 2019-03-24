@@ -37,7 +37,7 @@ let make = (~token, ~displayName, ~channelId, _children) => {
           }
         }
       </JerkCreatedSubscription>
-      <NewJerk displayName channelId />
+      <NewPug displayName channelId />
     </ReasonApollo.Provider>;
   },
 };

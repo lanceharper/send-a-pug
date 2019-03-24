@@ -19,8 +19,11 @@ let containerStyle =
   Style.(
     style([
       flex(1.0),
-      height(Pt(600.)),
-      backgroundColor(String("transparent")),
+      position(Absolute),
+      top(Pt(0.0)),
+      left(Pt(0.0)),
+      bottom(Pt(0.0)),
+      right(Pt(0.0)),
     ])
   );
 
@@ -35,7 +38,7 @@ let make = (~inboxResponse, _children) => {
         clickedBy: inboxResponse##from,
         sentAt: inboxResponse##sentAt,
         animation: Animated.Value.create(0.0),
-        startPosition: Js.Math.random_int(100, 400),
+        startPosition: Js.Math.random_int(100, 900),
       },
       ...self.state,
     ];
@@ -119,9 +122,7 @@ let make = (~inboxResponse, _children) => {
         self.state,
       );
     <View style=containerStyle>
-      <View style=StyleSheet.absoluteFill>
-        {ReasonReact.array(Array.of_list(heartList))}
-      </View>
+      {heartList |> Array.of_list |> ReasonReact.array}
     </View>;
   },
 };
