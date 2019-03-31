@@ -10,10 +10,9 @@ type item = {
 type state = list(item);
 
 type action =
-  | Click(item)
-  | Reset;
+  | AddPug(item);
 
-let component = ReasonReact.reducerComponent("JerkList");
+let component = ReasonReact.reducerComponent("PugList");
 
 let containerStyle =
   Style.(
@@ -32,19 +31,34 @@ let make = (~inboxResponse, _children) => {
 
   initialState: () => [],
 
+  didMount: self => {
+    self.send(
+      AddPug({
+        clickedBy: inboxResponse##from,
+        sentAt: inboxResponse##sentAt,
+        animation: Animated.Value.create(0.0),
+        startPosition: Js.Math.random_int(100, 400),
+      }),
+    );
+  },
+
+  // sad workaround due to render props
   willReceiveProps: self => {
     [
       {
         clickedBy: inboxResponse##from,
         sentAt: inboxResponse##sentAt,
         animation: Animated.Value.create(0.0),
-        startPosition: Js.Math.random_int(100, 900),
+        startPosition: Js.Math.random_int(100, 400),
       },
       ...self.state,
     ];
   },
 
-  reducer: ((), _state) => ReasonReact.NoUpdate,
+  reducer: (action, state) =>
+    switch (action) {
+    | AddPug(pug) => ReasonReact.Update([pug, ...state])
+    },
 
   render: self => {
     open Style;
